@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Premium Tailwind CSS Admin & Dashboard Template" />
+    <meta name="author" content="Parv Infotech" />
+    <title>DashHub - Tailwind CSS Admin & Dashboard Template</title>
+    <link rel="shortcut icon" href="https://olymel.replyreach.ca/test/DashHub/assets/images/favicon.ico">
+    <link rel="stylesheet" href="https://olymel.replyreach.ca/test/DashHub/assets/css/fancybox.css" />
+    <link rel="stylesheet" href="https://olymel.replyreach.ca/test/DashHub/assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://olymel.replyreach.ca/test/DashHub/assets/css/style.css">
+</head>
+<body x-data="main" class="font-inter text-base antialiased font-medium relative vertical">
+    <div class="bg-white dark:bg-dark text-dark dark:text-white bg-[url('https://olymel.replyreach.ca/test/DashHub/assets/images/autho-light-bg.png')] dark:bg-[url('https://olymel.replyreach.ca/test/DashHub/assets/images/autho-dark-bg.png')] bg-fixed bg-cover bg-center min-h-screen">
+        <div class="relative">
+            <div class="md:p-10 p-6 flex items-center justify-center sm:justify-between w-full flex-wrap gap-5">
+                <a href="index.php" class="main-logo">
+                    <img src="assets/images/logo-dark.svg" class="dark-logo h-8 logo dark:hidden" alt="logo" />
+                    <img src="assets/images/logo-light.svg" class="light-logo h-8 logo hidden dark:block" alt="logo" />
+                </a>
+            </div>
+            <div class="flex items-center justify-center px-5">
+                <div class="sm:p-[60px] p-9 border-2 border-gray/10 dark:border-gray/20 bg-white/10 dark:bg-white/[0.02] backdrop-blur-3xl max-w-[620px] mx-auto rounded-lg w-full">            
+                    <p class="text-3xl font-semibold">Reset Your Password</p>
+                    <p class="text-gray mt-5">Reset password from here!</p>
+                    <form class="mt-[30px] space-y-5" action="your_reset_url_here" method="post">
+                        <input type="hidden" name="token" value="your_token_here">
+                        <div class="relative">
+                            <input type="password" id="new_password" name="new_password"
+                                class="form-input h-[66px] bg-transparent dark:bg-transparent text-base rounded-[10px] ps-5 pe-14"
+                                placeholder="Password" required>
+                            <span class="toggle-password text-primary absolute right-5 top-1/2 -translate-y-1/2"
+                                onclick="togglePasswordVisibility('new_password')">
+                                <svg id="eyeIconpassword" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12ZM9.75 12C9.75 10.7574 10.7574 9.75 12 9.75C13.2426 9.75 14.25 10.7574 14.25 12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12Z" fill="currentColor"></path>
+                                </svg>
+                                <svg id="eyeSlashIconpassword" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0438 16.0438C15.8132 16.2744 15.5969 16.4881 15.3947 16.7064L17.2065 18.5181C17.3548 18.6616 17.4678 18.8431 17.5278 19.0358L16.4933 18.0013C16.1825 17.6905 15.7705 17.5216 15.3501 17.5246C15.3472 17.5246 15.3442 17.5246 15.3413 17.5246L15.3034 17.5656C14.972 17.8217 14.6378 18.0701 14.3105 18.3027L14.246 18.2393C14.0425 18.3963 13.8032 18.5195 13.5494 18.5714L13.6557 18.6777L13.2652 19.0683C12.9108 19.4226 12.4784 19.7521 12.0137 19.9704L10.3502 18.3069C10.2239 18.0629 10.1307 17.7948 10.0701 17.5141L11.8911 15.6931L16.0438 16.0438Z" fill="currentColor"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="confirm_password" name="confirm_password"
+                                class="form-input h-[66px] bg-transparent dark:bg-transparent text-base rounded-[10px] ps-5 pe-14"
+                                placeholder="Confirm Password" required>
+                            <span class="toggle-password text-primary absolute right-5 top-1/2 -translate-y-1/2"
+                                onclick="togglePasswordVisibility('confirm_password')">
+                                <svg id="eyeIconconfirm" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12Z" fill="currentColor"></path>
+                                </svg>
+                                <svg id="eyeSlashIconconfirm" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.3" d="M2 12C2 13.6394 2.42496 14.1915 3.27489 15.2957C4.97196 17.5004 7.81811 20 12 20C16.1819 20 19.028 17.5004 20.7251 15.2957C21.575 14.1915 22 13.6394 22 12C22 10.3606 21.575 9.80853 20.7251 8.70433C19.028 6.49956 16.1819 4 12 4C7.81811 4 4.97196 6.49956 3.27489 8.70433C2.42496 9.80853 2 10.3606 2 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 12C8.25 9.92893 9.92893 8.25 12 8.25C14.0711 8.25 15.75 9.92893 15.75 12C15.75 14.0711 14.0711 15.75 12 15.75C9.92893 15.75 8.25 14.0711 8.25 12Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0438 16.0438C15.8132 16.2744 15.5969 16.4881 15.3947 16.7064L17.2065 18.5181C17.3548 18.6616 17.4678 18.8431 17.5278 19.0358L16.4933 18.0013C16.1825 17.6905 15.7705 17.5216 15.3501 17.5246C15.3472 17.5246 15.3442 17.5246 15.3413 17.5246L15.3034 17.5656C14.972 17.8217 14.6378 18.0701 14.3105 18.3027L14.246 18.2393C14.0425 18.3963 13.8032 18.5195 13.5494 18.5714L13.6557 18.6777L13.2652 19.0683C12.9108 19.4226 12.4784 19.7521 12.0137 19.9704L10.3502 18.3069C10.2239 18.0629 10.1307 17.7948 10.0701 17.5141L11.8911 15.6931L16.0438 16.0438Z" fill="currentColor"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <button type="submit" name="reset_password" class="btn btn-primary w-full">Reset Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-white dark:bg-dark dark:border-gray/20 border-2 border-lightgray/10 p-5 rounded-lg flex flex-wrap justify-center gap-3 sm:justify-between items-center">
+        <p class="font-semibold">
+            &copy;
+            <script>
+                var year = new Date(); document.write(year.getFullYear());
+            </script>
+            DashHub
+        </p>
+        <ul class="sm:flex items-center text-dark dark:text-white gap-4 sm:gap-[30px] font-semibold hidden">
+            <li><a href="javascript:;" class="hover:text-primary transition-all duration-300 cursor-pointer">About</a></li>
+            <li><a href="javascript:;" class="hover:text-primary transition-all duration-300 cursor-pointer">Support</a></li>
+            <li><a href="javascript:;" class="hover:text-primary transition-all duration-300 cursor-pointer">Contact Us</a></li>
+        </ul>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Alpine js -->
+    <script src="https://olymel.replyreach.ca/test/DashHub/assets/js/alpine-collaspe.min.js"></script>
+    <script src="https://olymel.replyreach.ca/test/DashHub/assets/js/alpine-persist.min.js"></script>
+    <script src="https://olymel.replyreach.ca/test/DashHub/assets/js/alpine.min.js" defer></script>
+
+    <!-- Custom js -->
+    <script src="https://olymel.replyreach.ca/test/DashHub/assets/js/custom.js"></script>
+</body>
+</html>

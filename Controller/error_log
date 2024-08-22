@@ -1,0 +1,15 @@
+[15-Jul-2024 14:37:58 America/Chicago] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'replyrea_olymel.password_resets' doesn't exist in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/reset_password.php:28
+Stack trace:
+#0 /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/reset_password.php(28): mysqli->prepare('SELECT email FR...')
+#1 {main}
+  thrown in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/reset_password.php on line 28
+[16-Jul-2024 15:00:38 America/Chicago] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry 'admin' for key 'username' in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php:21
+Stack trace:
+#0 /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php(21): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php on line 21
+[17-Jul-2024 22:43:00 America/Chicago] PHP Fatal error:  Uncaught mysqli_sql_exception: Duplicate entry 'admin1' for key 'username' in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php:21
+Stack trace:
+#0 /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php(21): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home4/replyrea/olymel.replyreach.ca/test/DashHub/Controller/update_user.php on line 21
