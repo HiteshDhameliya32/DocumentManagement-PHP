@@ -19,5 +19,5 @@ email: admin@test.com
 password: admin
 
 // user id password
-email: mihirjariwala337@gmail.com
-password: 9mihir!12
+email: pixcelsthemes@gmail.com
+password: admin
