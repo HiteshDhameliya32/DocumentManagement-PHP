@@ -25,17 +25,19 @@ while ($row = $result_users->fetch_assoc()) {
 }
 
 
-$extensions_sql = "SELECT DISTINCT extension FROM extension"; // Assuming you have a table for allowed extensions
+// Fetch allowed extensions from the database
+$extensions_sql = "SELECT DISTINCT extension FROM extension";
 $result = $conn->query($extensions_sql);
 
-$extensions = [];
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $extensions[] = $row['extension'];
-    }
+$allowed_extensions = [];
+while ($row = $result->fetch_assoc()) {
+    $allowed_extensions[] = $row['extension'];
 }
 
+// Create the accept attribute for the file input
+$accept_attribute = implode(',', array_map(function($ext) {
+    return ".$ext";
+}, $allowed_extensions));
 
 // Close the database connection
 $conn->close();
@@ -69,48 +71,45 @@ $conn->close();
                             </div>
                             <div class="p-5 space-y-4">
                                 <form x-ref="uploadForm" @submit.prevent="uploadFile" class="space-y-4">
+                                    <!-- File Upload -->
                                     <div class="mb-4">
                                         <label for="file" class="block text-gray-700 dark:text-gray-300">Choose
                                             File</label>
                                         <div class="flex">
                                             <div
-                                                class="flex items-center border-r-0 justify-center rounded-l border-2 border-primary bg-primary dark:border-lightgray/20 text-white px-3.5">
+                                                class="flex items-center justify-center rounded-l border-2 border-primary bg-primary dark:border-lightgray/20 text-white px-3.5">
                                                 <span>
+                                                    <!-- SVG for upload icon -->
                                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path opacity="0.3"
-                                                            d="M18.7491 9V9.7041C18.7491 10.5491 18.9903 11.3752 19.4422 12.0782L20.5496 13.8012C21.5612 15.3749 20.789 17.5139 19.0296 18.0116C14.4273 19.3134 9.57274 19.3134 4.97036 18.0116C3.21105 17.5139 2.43882 15.3749 3.45036 13.8012L4.5578 12.0782C5.00972 11.3752 5.25087 10.5491 5.25087 9.7041V9C5.25087 5.13401 8.27256 2 12 2C15.7274 2 18.7491 5.13401 18.7491 9Z"
-                                                            fill="currentColor"></path>
+                                                        <!-- File icon -->
                                                         <path
-                                                            d="M12.75 6C12.75 5.58579 12.4142 5.25 12 5.25C11.5858 5.25 11.25 5.58579 11.25 6V10C11.25 10.4142 11.5858 10.75 12 10.75C12.4142 10.75 12.75 10.4142 12.75 10V6Z"
-                                                            fill="currentColor"></path>
-                                                        <path
-                                                            d="M7.24316 18.5449C7.8941 20.5501 9.77767 21.9997 11.9998 21.9997C14.222 21.9997 16.1055 20.5501 16.7565 18.5449C13.611 19.1352 10.3886 19.1352 7.24316 18.5449Z"
-                                                            fill="currentColor"></path>
+                                                            d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10L14 2Z"
+                                                            fill="currentColor" />
+                                                        <!-- Upload arrow -->
+                                                        <path d="M13 12H11V8H9L12 5L15 8H13V12Z" fill="currentColor" />
                                                     </svg>
                                                 </span>
                                             </div>
                                             <label for="file"
                                                 class="form-input rounded-l-none rounded-r bg-gray-200 dark:bg-gray-800 dark:text-gray-300 flex items-center cursor-pointer">
-                                                <span id="fileName"> Choose a file...</span>
+                                                <span id="fileName">Choose a file...</span>
                                             </label>
-                                            <input id="file" type="file" class="hidden" x-ref="file" required>
+                                            <input id="file" type="file" class="hidden" x-ref="file" required
+                                                accept="<?= htmlspecialchars($accept_attribute) ?>">
                                         </div>
                                     </div>
 
-                                    <script>
-                                        document.getElementById('file').addEventListener('change', function () {
-                                            const fileName = this.files[0] ? this.files[0].name : 'Choose a file...';
-                                            document.getElementById('fileName').innerText = fileName;
-                                        });
-                                    </script>
-
+                                    <!-- Description -->
                                     <div class="mb-4">
                                         <label for="description"
                                             class="block text-gray-700 dark:text-gray-300">Description</label>
-                                        <input type="text" id="description" x-ref="description" class="form-input"
+                                        <input type="text" id="description" x-ref="description"
+                                            class="form-input rounded bg-gray-200 dark:bg-gray-800 dark:text-gray-300 w-full"
                                             placeholder="Enter file description" required>
                                     </div>
+
+                                    <!-- Buttons -->
                                     <div class="flex justify-end items-center gap-4">
                                         <button type="button"
                                             class="btn border text-danger border-transparent rounded-md transition-all duration-300 hover:text-white hover:bg-danger bg-danger/10"
@@ -120,6 +119,14 @@ $conn->close();
                                     </div>
                                 </form>
                             </div>
+
+                            <!-- JavaScript -->
+                            <script>
+                                document.getElementById('file').addEventListener('change', function () {
+                                    const fileName = this.files[0] ? this.files[0].name : 'Choose a file...';
+                                    document.getElementById('fileName').innerText = fileName;
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -164,24 +171,7 @@ $conn->close();
                         </th>
                         <th>
                             <div class="flex items-center justify-between gap-2">
-                                <p>File Name</p>
-                                <div class="flex flex-col">
-                                    <svg stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Description</p>
+                                <p>Title</p>
                                 <div class="flex flex-col">
                                     <svg stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
                                         viewBox="0 0 24 24" stroke="currentColor"
@@ -220,35 +210,20 @@ $conn->close();
                         </th>
                         <th>
                             <div class="flex items-center justify-between gap-2">
-                                <p>Action</p>
+                                <p>Delete</p>
                             </div>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template x-for="file in files" :key="file.id">
+                    <template x-for="(file, index) in files" :key="file.id">
                         <tr x-data="{ editing: false, userRole: file.user_role }">
-                            <td x-text="file.id"></td>
+                            <td x-text="index + 1"></td>
                             <td>
-                                <span x-show="!editing" x-text="file.name"
-                                    x-on:dblclick="editing = true; $nextTick(() => $refs.email.focus())"></span>
-                                <input x-show="editing" x-ref="email" type="text" class="form-input"
-                                    x-model="file.email"
-                                    x-on:keydown.enter="editing = false; updateUser(file.user_id, file.email, file.username, userRole)">
+                                <span x-text="file.description"></span>
                             </td>
                             <td>
-                                <span x-show="!editing" x-text="file.description"
-                                    x-on:dblclick="editing = true; $nextTick(() => $refs.email.focus())"></span>
-                                <input x-show="editing" x-ref="email" type="text" class="form-input"
-                                    x-model="file.email"
-                                    x-on:keydown.enter="editing = false; updateUser(file.user_id, file.email, file.username, userRole)">
-                            </td>
-                            <td>
-                                <span x-show="!editing" x-text="file.create_date"
-                                    x-on:dblclick="editing = true; $nextTick(() => $refs.username.focus())"></span>
-                                <input x-show="editing" x-ref="username" type="text" class="form-input"
-                                    x-model="file.username"
-                                    x-on:keydown.enter="editing = false; updateUser(file.user_id, file.email, file.username, userRole)">
+                                <span x-text="file.create_date"></span>
                             </td>
                             <td>
                                 <button href="javascript:;" x-on:click="confirmDownload(file.id)">
@@ -342,6 +317,7 @@ $conn->close();
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
+                                alert("file deleted successfully");
                                 this.files = this.files.filter(file => file.id !== id);
                             } else {
                                 alert("Error deleting file: " + data.error);
@@ -355,47 +331,47 @@ $conn->close();
             },
 
             async uploadFile() {
-    const fileInput = this.$refs.file;
-    const descriptionInput = this.$refs.description;
+                const fileInput = this.$refs.file;
+                const descriptionInput = this.$refs.description;
 
-    if (fileInput.files.length === 0) {
-        alert('Please select a file to upload.');
-        return;
-    }
+                if (fileInput.files.length === 0) {
+                    alert('Please select a file to upload.');
+                    return;
+                }
 
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-    formData.append('description', descriptionInput.value);
-    formData.append('category_id', '<?php echo $categoryName; ?>');
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                formData.append('description', descriptionInput.value);
+                formData.append('category_id', '<?php echo $categoryName; ?>');
 
-    try {
-        const response = await fetch('Controller/upload_file.php', {
-            method: 'POST',
-            body: formData
-        });
+                try {
+                    const response = await fetch('Controller/upload_file.php', {
+                        method: 'POST',
+                        body: formData
+                    });
 
-        const resultText = await response.text(); // Get the raw text response
-        let data;
-        try {
-            data = JSON.parse(resultText); // Attempt to parse as JSON
-        } catch (jsonError) {
-            console.error("JSON parse error:", jsonError);
-            alert("An error occurred while processing the server response.");
-            return;
-        }
+                    const resultText = await response.text(); // Get the raw text response
+                    let data;
+                    try {
+                        data = JSON.parse(resultText); // Attempt to parse as JSON
+                    } catch (jsonError) {
+                        console.error("JSON parse error:", jsonError);
+                        alert("An error occurred while processing the server response.");
+                        return;
+                    }
 
-        if (response.ok && data.success) {
-            this.files.push(data.file);
-            alert("File uploaded successfully!");
-            this.toggle(); // Close the modal on success
-        } else {
-            alert("File upload failed: " + (data.error || "Unknown error"));
-        }
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        alert("An error occurred while uploading the file.");
-    }
-},
+                    if (response.ok && data.success) {
+                        this.files.push(data.file);
+                        alert("File uploaded successfully!");
+                        this.toggle(); // Close the modal on success
+                    } else {
+                        alert("File upload failed: " + (data.error || "Unknown error"));
+                    }
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    alert("An error occurred while uploading the file.");
+                }
+            },
             handleFileDrop(event) {
                 this.preventDefaults(event);
                 const droppedFiles = event.dataTransfer.files;

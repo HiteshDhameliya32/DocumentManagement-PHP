@@ -108,7 +108,7 @@ $conn->close();
                         </th>
                         <th>
                             <div class="flex items-center justify-between gap-2">
-                                <p>Name</p>
+                                <p>category's</p>
                                 <div class="flex flex-col">
                                     <svg stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
                                         viewBox="0 0 24 24" stroke="currentColor"
@@ -140,40 +140,7 @@ $conn->close();
                                 </div>
                             </div>
                         </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Created on</p>
-                                <div class="flex flex-col">
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Last Update</p>
-                                <div class="flex flex-col">
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
+                        
                         <th>
                             <div class="flex items-center justify-between gap-2">
                                 <p>Created By</p>
@@ -193,32 +160,16 @@ $conn->close();
                         </th>
                         <th>
                             <div class="flex items-center justify-between gap-2">
-                                <p>Updated By</p>
-                                <div class="flex flex-col">
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Action</p>
+                                <p>Delete</p>
                             </div>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template x-for="category in categorys" :key="category.id">
-                        <tr x-data="{ editing: false}">
-                            <td x-text="category.id"></td>
+                <template x-for="(category, index) in categorys" :key="category.id">
+                        <tr x-data="{ editing: false }">
+                            <!-- Display the series number -->
+                            <td x-text="index + 1"></td>
                             <td>
                                 <span x-show="!editing" x-text="category.name"
                                     x-on:dblclick="editing = true; $nextTick(() => $refs.name.focus())"></span>
@@ -233,16 +184,7 @@ $conn->close();
                                     x-model="category.description"
                                     x-on:keydown.enter="editing = false; updateCategory(category.id,category.name, category.description,<?php echo json_encode($user_id); ?>)">
                             </td>
-                            <td>
-                                <span x-text="category.create_date"></span>
-                            </td>
-                            <td>
-                                <span x-text="category.update_date"></span>
-                            </td>
                             <td x-data="{ username: '' }" x-init="fetchUsername(category.create_by)">
-                                <span x-text="username"></span>
-                            </td>
-                            <td x-data="{ username: '' }" x-init="fetchUsername(category.update_by)">
                                 <span x-text="username"></span>
                             </td>
                             <td>
@@ -291,13 +233,10 @@ $conn->close();
             categorys: <?php echo json_encode($categorys); ?>,
 
             deleteCategory(id) {
-                console.log('Category type before deletion:', Array.isArray(this.categorys) ? 'Array' : 'Not an array');
-                console.log('Category value before deletion:', this.categorys);
 
                 if (typeof this.categorys === 'object' && !Array.isArray(this.categorys)) {
                     // If it's a proxy object, convert it to an array
                     this.categorys = [this.categorys];
-                    console.log('Converted category to array:', this.categorys);
                 }
 
                 if (confirm('Are you sure you want to delete the category?')) {
@@ -309,11 +248,10 @@ $conn->close();
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                console.log("Category deleted successfully");
+                                alert("Category deleted successfully");
 
                                 if (Array.isArray(this.categorys)) {
                                     this.categorys = this.categorys.filter(cat => cat.id !== id);
-                                    console.log('Category value after deletion:', this.categorys);
                                 } else {
                                     console.error("this.category is not an array");
                                 }
@@ -323,7 +261,6 @@ $conn->close();
                         })
                         .catch(error => console.error("Error:", error));
                 } else {
-                    console.log("Category deletion canceled");
                 }
             },
 
@@ -346,6 +283,7 @@ $conn->close();
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
+                                alert("Category Updated successful");
                                 if (Array.isArray(this.categorys)) {
                                     const category = this.categorys.find(cat => cat.id === id);
                                     if (category) {
@@ -365,7 +303,6 @@ $conn->close();
                         })
                         .catch(error => console.error("Error:", error));
                 } else {
-                    console.log("Update cancelled");
                 }
             },
 
@@ -398,6 +335,7 @@ $conn->close();
                         try {
                             const data = JSON.parse(text);  // Parse text as JSON
                             if (data.success) {
+                                alert("Category Added successful");
                                 this.categorys.push(data.category);
                                 document.querySelector('#category-name').value = '';
                                 document.querySelector('#category-description').value = '';

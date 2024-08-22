@@ -35,7 +35,7 @@ if (isset($data['id'])) {
         $userId = $file['create_by'];
 
         // Construct the URL using the user ID and filename
-        $fileUrl = "http://localhost/DashHub/uploads/{$userId}/{$fileName}";
+        $fileUrl = "https://olymel.replyreach.ca/test/DashHub/uploads/{$userId}/{$fileName}";
 
         // Return the URL in the JSON response
         header('Content-Type: application/json');

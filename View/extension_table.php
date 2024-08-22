@@ -53,7 +53,6 @@ if ($result_category->num_rows > 0) {
 $conn->close();
 ?>
 <div class="grid grid-cols-1 gap-5" x-data="categoryTableData()">
-
     <div class="bg-white dark:bg-dark dark:border-gray/20 border-2 border-lightgray/10 p-5 rounded-lg">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-base font-semibold">extension Table</h2>
@@ -81,8 +80,14 @@ $conn->close();
                             </div>
                             <div class="p-5 space-y-4">
                                 <form class="space-y-4">
-                                    <input id="extension-name" type="text" class="form-input"
-                                        placeholder="Type extension" required="">
+                                    <input id="extension-name" type="text"
+                                        class="form-input rounded bg-gray-200 dark:bg-gray-800 dark:text-gray-300 w-full"
+                                        placeholder="Type extension" required>
+                                    <script>
+                                        document.getElementById('extension-name').addEventListener('input', function () {
+                                            this.value = this.value.toLowerCase();
+                                        });
+                                    </script>
                                 </form>
                                 <div class="flex justify-end items-center gap-4">
                                     <button type="button"
@@ -194,9 +199,9 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <template x-for="extension in extensions" :key="extension.id">
+                    <template x-for="(extension, index) in extensions" :key="extension.id">
                         <tr x-data="{ editing: false}">
-                            <td x-text="extension.id"></td>
+                            <td x-text="index + 1"></td>
                             <td>
                                 <span x-text="extension.extension"></span>
                             </td>
@@ -263,7 +268,7 @@ $conn->close();
                         body: JSON.stringify({ id: id })
                     }).then(response => response.json()).then(data => {
                         if (data.success) {
-                            console.log("Extension deleted successfully");
+                            alert("Extension deleted successfully");
                             this.extensions = this.extensions.filter(ex => ex.id !== id);
                         } else {
                             console.error("Error deleting extension:", data.error);
@@ -274,7 +279,7 @@ $conn->close();
                     console.log("Extension deletion canceled");
                 }
             },
-            
+
             addExtension() {
                 const extension = document.querySelector('#extension-name').value.trim();
                 const create_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -300,6 +305,7 @@ $conn->close();
                     })
                     .then(data => {
                         if (data.success) {
+                            alert("Extension added successfully");
                             this.extensions.push(data.extension);  // Using correct key from the PHP response
                             document.querySelector('#extension-name').value = '';
                             this.open = false;

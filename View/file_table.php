@@ -61,58 +61,7 @@ $conn->close();
                         </th>
                         <th>
                             <div class="flex items-center justify-between gap-2">
-                                <p>File Names</p>
-                                <div class="flex flex-col">
-                                    <svg stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Description</p>
-                                <div class="flex flex-col">
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>File Path</p>
-                                <div class="flex flex-col">
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M5 15l7-7 7 7"></path>
-                                    </svg>
-                                    <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
-                                        viewBox="0 0 24 24" stroke="currentColor"
-                                        class="h-3 w-3 cursor-pointer text-muted fill-current">
-                                        <path d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="flex items-center justify-between gap-2">
-                                <p>Uploaded On </p>
+                                <p>Title</p>
                                 <div class="flex flex-col">
                                     <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
                                         viewBox="0 0 24 24" stroke="currentColor"
@@ -152,23 +101,14 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <template x-for="file in files" :key="file.id">
+                    <template x-for="(file, index) in files" :key="file.id">
                         <tr x-data="{ editing: false, userRole: file.user_role }">
-                            <td x-text="file.id"></td>
-                            <td>
-                                <span x-text="file.name"></span>
-                            </td>
+                            <td x-text="index + 1"></td>
                             <td>
                                 <span x-text="file.description"></span>
                             </td>
-                            <td>
-                                <span x-text="file.file_path"></span>
-                            </td>
-                            <td>
-                                <span x-text="file.create_date"></span>
-                            </td>
-                            <td>
-                                <span x-text="file.create_by"></span>
+                            <td x-data="{ username: '' }" x-init="fetchUsername(file.create_by)">
+                                <span x-text="username"></span>
                             </td>
                             <td>
                                 <button class="text-danger ms-2" x-on:click="deleteUser(file.id)">
@@ -224,7 +164,7 @@ $conn->close();
                         body: JSON.stringify({ id: id })
                     }).then(response => response.json()).then(data => {
                         if (data.success) {
-                            console.log("file deleted successfully");
+                            alert("file deleted successfully");
                             console.log(this.files)
                             this.files = this.files.filter(file => file.id !== id);
                         } else {
@@ -233,6 +173,18 @@ $conn->close();
                     }).catch(error => console.error("Error:", error));
                 } else {
                     console.log("file deletion canceled");
+                }
+            },
+            fetchUsername(userId) {
+                if (userId) {
+                    fetch('Controller/get_username.php?user_id=' + userId)
+                        .then(response => response.text())  // Change to .text() to see the full response
+                        .then(data => {
+                            this.username = JSON.parse(data).username ? JSON.parse(data).username : 'Unknown User';
+                        })
+                        .catch(error => {
+                            console.error('Error fetching username:', error);
+                        });
                 }
             }
         }
