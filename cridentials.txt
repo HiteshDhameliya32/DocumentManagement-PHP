@@ -7,14 +7,15 @@ FTP Password: Y2yfjzIEAS{)
 
 // database id Password
 https://gator4100.hostgator.com:2083/cpsess0974603930/3rdparty/phpMyAdmin/index.php
-MySQL Database: replyrea_olymel
-MySQL User: replyrea_pixcelsythemes
-MySQL Password: Y2yfjzIEAS{)
+$servername = "192.185.39.49:3306";  // Database server name
+$username = "replyrea_pixcelsythemes";  // Database username
+$password = "Hostgator2024!";  // Database password
+$dbname = "replyrea_olymel";  // Database name
 
 // admin id Password
 email: admin@test.com
 password: admin
 
 // user id password
-email: mihirjariwala337@gmail.com
-password: 9mihir!12
+email: pixcelsthemes@gmail.com
+password: admin

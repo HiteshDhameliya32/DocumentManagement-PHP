@@ -5,9 +5,10 @@ include __DIR__ . '/../Authentication/db_connect.php';
 
 // Initialize arrays to store the fetched files and roles
 $files = [];
+$user_id = $_SESSION['user_id'];
 
 // Fetch data from the file table
-$sql_users_files = "SELECT * FROM files where `category_id` = $categoryName";
+$sql_users_files = "SELECT * FROM files where `category_id` = $categoryName and `create_by` = $user_id";
 $result_users = $conn->query($sql_users_files);
 
 if ($result_users->num_rows > 0) {
